@@ -85,18 +85,6 @@
             <type>pom</type>
         </dependency>
 
-        <dependency>
-            <groupId>javax.jws</groupId>
-            <artifactId>jsr181-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.spec.javax.xml.ws</groupId>
-            <artifactId>jboss-jaxws-api_2.3_spec</artifactId>
-            <version>1.0.0.Final</version>
-        </dependency>
-        
     </dependencies>
 
     <build>

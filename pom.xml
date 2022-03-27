@@ -21,7 +21,7 @@
         <groupId>org.jboss.eap.quickstarts</groupId>
         <artifactId>quickstart-parent</artifactId>
         <version>7.1.0.GA</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>pomJboss.xml</relativePath>
     </parent>
     <artifactId>helloworld-ws</artifactId>
     <packaging>war</packaging>

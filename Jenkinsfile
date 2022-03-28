@@ -3,7 +3,7 @@ pipeline {
     environment {
         imageName = 'helloworld-msurmach'
         registryCredentials = "nexus"
-        registry = "10.12.1.14:8085"
+        registry = "eu.gcr.io"
         err_msg = ' '
     }
     tools { 
@@ -40,7 +40,11 @@ pipeline {
             steps {
                 script{
                     try {
-                       echo "sonar start"
+                       echo """ 
+                        withSonarQubeEnv('Sonar') {
+                            sh "/var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation/Sonar/bin/sonar-scanner -Dsonar.host.url=<SONAR_URL>  -Dsonar.projectKey=FinalTaskTest -Dsonar.projectName=FinalTaskTest -Dsonar.language=java -Dsonar.qualitygate.wait=true -Dsonar.projectVersion=1.0 -Dsonar.java.binaries=target -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ "
+                        }
+                        """
                     } catch (e) {
                         err_msg = "${e}"
                         throw e
@@ -146,11 +150,10 @@ pipeline {
               steps{
                 script{
                   try{
-                     dockerImage = docker.build imageName
-                     docker.withRegistry( 'http://'+registry, registryCredentials ) {
-                     dockerImage.push("rc-${env.BUILD_NUMBER}")
-                     dockerImage.push("latest")
-                     }
+                     dockerImage = docker.build "gcr.io/personal-342719/helloworld-msurmach:rc-${env.BUILD_NUMBER}"
+                     withDockerRegistry([credentialsId: "gcr:personal-342719", url: "https://gcr.io"]) {
+                        sh "docker push gcr.io/personal-342719/helloworld-msurmach:rc-${env.BUILD_NUMBER}"
+                      }
                   }
                   catch (e){
                     err_msg = "${e}"
@@ -173,6 +176,7 @@ pipeline {
         stage('Deployment ') {
             steps{
                 script {
+                    sh "sed -i -e 's,<BUILD>,${env.BUILD_NUMBER},g' deploy_app.yaml"
                     kubernetesDeploy(configs: "deploy_app.yaml", kubeconfigId: "k8s_kubeconfig")
                 }
                 

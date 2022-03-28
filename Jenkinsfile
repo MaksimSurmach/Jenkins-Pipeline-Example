@@ -130,7 +130,7 @@ pipeline {
                                 [artifactId: "pipeline-msurmach",
                                 classifier: '',
                                 file: "pipeline-msurmach-${env.BUILD_NUMBER}.tar.gz",
-                                type: 'gz']
+                                type: 'tar.gz']
                             ]
                         );
                   }

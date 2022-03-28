@@ -14,10 +14,10 @@ spec:
         app: helloworld
     spec:
       imagePullSecrets:
-      - name: nexus
+      - name: gcr-json-key
       containers:
         - name: helloworld
-          image: 10.12.1.14:8085/helloworld-msurmach:latest
+          image: gcr.io/personal-342719/helloworld-msurmach:rc-<BUILD>
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

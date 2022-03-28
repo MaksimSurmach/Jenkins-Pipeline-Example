@@ -13,6 +13,8 @@ spec:
       labels:
         app: helloworld
     spec:
+      imagePullSecrets:
+      - name: nexus
       containers:
         - name: helloworld
           image: 10.12.1.14:8085/helloworld-msurmach:latest
@@ -35,24 +37,3 @@ spec:
       targetPort: 8080
       nodePort: 30001
 
----
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: helloworld-ingress
-  namespace: prod
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-  - host: "maxsurm.me"
-    http:
-      paths:
-      - path: /*
-        pathType: Prefix
-        backend:
-          service:
-            name: helloworld-svc
-            port:
-              number: 8080

@@ -24,9 +24,10 @@ metadata:
   name: nexus-repo
   namespace: jenkins
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 8085
       targetPort: 8085
+      nodePort: 30085
   selector:
     app: nexus-server
